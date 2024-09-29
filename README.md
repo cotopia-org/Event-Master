@@ -80,4 +80,24 @@ Event Master uses JWT tokens for authentication. To interact with the API, you m
 Example request for login:
 ```bash
 curl -X POST -d '{"username": "yourusername", "password": "yourpassword"}' http://localhost:8080/auth/login
+```
+## Event Logic
+Event Master enforces logical rules on events to ensure data consistency:
+
+- **Logical Sequence**: If a task_started event is received but no session_started event has been logged before it, Event Master will automatically insert the missing session_started event.
+- **Paired Events**: Events like session_started and session_ended are considered paired. These pairs are stored in Redis until both events are received, at which point they are processed and stored in the database.
+
+## Report Generation
+Event Master generates reports using concepts from Algebra of Sets, allowing for complex data analysis. Reports can aggregate, filter, and compare events based on set operations such as union, intersection, and difference.
+
+Reports can be customized based on the time period, event types, and more.
+
+## Technologies Used
+- Go: The main programming language for the backend.
+- Gin: A high-performance HTTP web framework for Go.
+- Redis: Used for storing paired events that are pending (e.g., session start/end).
+- JWT: JSON Web Tokens for secure authentication.
+
+## License
+TBA
 
