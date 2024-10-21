@@ -18,6 +18,7 @@ func main() {
 	r.GET("/events", controllers.EventsIndex)
 	r.GET("/events/:id", controllers.EventsShow)
 	r.PUT("/events/:id", controllers.EventsUpdate)
+	r.DELETE("/events/:id", controllers.EventsDelete)
 
 	r.Run() // listen and serve on 0.0.0.0:PORT
 }

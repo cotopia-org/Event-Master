@@ -81,3 +81,15 @@ func EventsUpdate(c *gin.Context) {
 		"event": event,
 	})
 }
+
+func EventsDelete(c *gin.Context) {
+	// get the id off url
+	id := c.Param("id")
+
+	// delete the event
+	initializers.DB.Delete(&models.Event{}, id)
+
+	// respond!
+	c.Status(200)
+
+}
