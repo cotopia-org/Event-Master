@@ -36,7 +36,21 @@ func EventsIndex(c *gin.Context) {
 
 	// respond with it
 	c.JSON(200, gin.H{
-		"event": events,
+		"events": events,
 	})
 
+}
+
+func EventsShow(c *gin.Context) {
+	// get id off url
+	id := c.Param("id")
+
+	// get the events
+	var event models.Event
+	initializers.DB.First(&event, id)
+
+	// respond with it
+	c.JSON(200, gin.H{
+		"event": event,
+	})
 }
