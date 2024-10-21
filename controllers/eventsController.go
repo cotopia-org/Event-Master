@@ -54,3 +54,30 @@ func EventsShow(c *gin.Context) {
 		"event": event,
 	})
 }
+
+func EventsUpdate(c *gin.Context) {
+	// get the id off url
+	id := c.Param("id")
+
+	// get the data off req body
+	var body struct {
+		Title string
+		Body string
+	}
+	c.Bind(&body)
+
+	// find the event we're updating
+	var event models.Event
+	initializers.DB.First(&event, id)
+
+	// update it
+	initializers.DB.Model(&event).Updates(models.Event{
+		Title: body.Title,
+		Body: body.Body,
+	})
+
+	// respond with it
+	c.JSON(201, gin.H{
+		"event": event,
+	})
+}
