@@ -24,7 +24,19 @@ func EventsCreate(c *gin.Context) {
 	}
 
 	// return it
-	c.JSON(200, gin.H{
+	c.JSON(201, gin.H{
 		"event": event,
 	})
+}
+
+func EventsIndex(c *gin.Context) {
+	// get the events
+	var events []models.Event
+	initializers.DB.Find(&events)
+
+	// respond with it
+	c.JSON(200, gin.H{
+		"event": events,
+	})
+
 }
