@@ -6,6 +6,7 @@ import (
 	"github.com/cotopia-org/Event-Master/controllers"
 	"github.com/cotopia-org/Event-Master/initializers"
 	"github.com/cotopia-org/Event-Master/middlewares"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +17,16 @@ func init() {
 
 func main() {
 	r := gin.Default()
+
+	// CORS middleware configuration
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Use the custom middleware
 	r.Use(middlewares.TimeLogger())
