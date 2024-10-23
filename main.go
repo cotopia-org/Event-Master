@@ -3,6 +3,7 @@ package main
 import (
 	"time"
 
+	"github.com/cotopia-org/Event-Master/auth"
 	"github.com/cotopia-org/Event-Master/controllers"
 	"github.com/cotopia-org/Event-Master/initializers"
 	"github.com/cotopia-org/Event-Master/middlewares"
@@ -31,6 +32,8 @@ func main() {
 	// Use the custom middleware
 	r.Use(middlewares.TimeLogger())
 
+	r.POST("/login", auth.Login)
+
 	r.POST("/events", controllers.EventsCreate)
 	r.GET("/events", controllers.EventsIndex)
 	r.GET("/events/:id", controllers.EventsShow)
@@ -46,6 +49,13 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	// Protected route group
+	protected := r.Group("/protected")
+	protected.Use(auth.JWTAuthMiddleware())
+	{
+		protected.GET("/dashboard", auth.ProtectedRoute)
+	}
 
 	r.Run() // listen and serve on 0.0.0.0:PORT
 }
