@@ -17,6 +17,9 @@ func init() {
 func main() {
 	r := gin.Default()
 
+	// Use the custom middleware
+	r.Use(middlewares.TimeLogger())
+
 	r.POST("/events", controllers.EventsCreate)
 	r.GET("/events", controllers.EventsIndex)
 	r.GET("/events/:id", controllers.EventsShow)
@@ -25,6 +28,13 @@ func main() {
 
 	// Route with timeout handling
 	r.GET("/timeout", middlewares.TimeoutHandler(5*time.Second, middlewares.LongRunningOperation))
+
+	// Define a simple GET route
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
 	r.Run() // listen and serve on 0.0.0.0:PORT
 }
