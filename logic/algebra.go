@@ -143,6 +143,7 @@ func Complement(x1, x2, minBound, maxBound float64) (bool, float64, float64, flo
 	}
 
 	// Return the complement intervals
+	// If nil (the line segment covers the whole boundary), return false
 	return hasFirstInterval || hasSecondInterval, complementStart1, complementEnd1, complementStart2, complementEnd2
 }
 
