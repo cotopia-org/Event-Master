@@ -9,7 +9,7 @@ func intersect(seg1, seg2 LineSegment) (LineSegment, bool) {
 	start := math.Max(seg1.Start, seg2.Start)
 	end := math.Min(seg1.End, seg2.End)
 	
-	// If there is no overlap, return an invalid segment
+	// If there is no overlap, return an invalid segment and false
 	if start > end {
 		return LineSegment{}, false
 	}
