@@ -83,3 +83,66 @@ func Union(a1, a2, b1, b2 float64) (bool, float64, float64, float64, float64) {
 	// If they don't overlap, return the two separate intervals
 	return false, A1, A2, B1, B2
 }
+
+
+// Complement Algorithm
+// Input: P1(x1), P2(x2), minBound, maxBound
+
+// 1. Compute the interval for the line segment:
+//    A1 = min(x1, x2)
+//    A2 = max(x1, x2)
+
+// 2. Check if the segment is entirely outside the boundary:
+//    If A2 < minBound OR A1 > maxBound:
+//       - The line segment is completely outside the boundary.
+//       - The complement is the entire boundary: [minBound, maxBound]
+//       - Return complement as [minBound, maxBound]
+
+// 3. Otherwise, compute the complement intervals:
+//    Initialize complement = []
+
+// 4. If there is a gap between the start of the boundary and the start of the segment:
+//    If minBound < A1:
+//       - Add the complement interval [minBound, A1] to the result.
+
+// 5. If there is a gap between the end of the segment and the end of the boundary:
+//    If A2 < maxBound:
+//       - Add the complement interval [A2, maxBound] to the result.
+
+// 6. Return the complement interval(s).
+
+// Function to compute the complement of a 1D line segment within a boundary
+func Complement(x1, x2, minBound, maxBound float64) (bool, float64, float64, float64, float64) {
+	// Calculate the interval for the line segment
+	A1 := math.Min(x1, x2)
+	A2 := math.Max(x1, x2)
+
+	// Check if the segment is completely outside the boundary
+	if A2 < minBound || A1 > maxBound {
+		// The segment is outside the boundary, return the whole boundary as the complement
+		return true, minBound, maxBound, 0, 0
+	}
+
+	// Initialize variables for complement intervals
+	var complementStart1, complementEnd1, complementStart2, complementEnd2 float64
+	hasFirstInterval := false
+	hasSecondInterval := false
+
+	// Check if there is a gap between the start of the boundary and the start of the segment
+	if minBound < A1 {
+		complementStart1 = minBound
+		complementEnd1 = A1
+		hasFirstInterval = true
+	}
+
+	// Check if there is a gap between the end of the segment and the end of the boundary
+	if A2 < maxBound {
+		complementStart2 = A2
+		complementEnd2 = maxBound
+		hasSecondInterval = true
+	}
+
+	// Return the complement intervals
+	return hasFirstInterval || hasSecondInterval, complementStart1, complementEnd1, complementStart2, complementEnd2
+}
+
