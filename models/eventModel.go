@@ -7,8 +7,9 @@ import (
 
 type Event struct {
 	gorm.Model
-	Owner    string
-	Epoch    int `gorm:"not null"`
+	OwnerID  uint `gorm:"not null"`           // Foreign key to User model
+	Owner    User `gorm:"foreignKey:OwnerID"` // Establishes relationship to User as Owner
+	Epoch    int  `gorm:"not null"`
 	Kind     string
 	Doer     string
 	IsPair   bool `gorm:"default:false"`
