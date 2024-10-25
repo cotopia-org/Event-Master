@@ -1,9 +1,18 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
+)
 
 type Event struct {
 	gorm.Model
-	Title string
-	Body string
+	Owner    string
+	Epoch    int `gorm:"not null"`
+	Kind     string
+	Doer     string
+	IsPair   bool `gorm:"default:false"`
+	PairId   uint
+	Duration int `gorm:"default:-1"`
+	Note     datatypes.JSON
 }
