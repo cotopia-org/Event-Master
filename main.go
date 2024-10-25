@@ -32,6 +32,11 @@ func main() {
 	// Use the custom middleware
 	r.Use(middlewares.TimeLogger())
 
+	r.POST("/users", controllers.UserCreate)
+	r.GET("/users/:id", controllers.UserGetByID)
+	r.PUT("/users/:id", controllers.UserUpdate)
+	r.DELETE("/users/:id", controllers.UserDelete)
+
 	r.POST("/login", auth.Login)
 
 	r.POST("/events", controllers.EventsCreate)
