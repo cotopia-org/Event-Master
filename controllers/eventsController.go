@@ -1,32 +1,30 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/cotopia-org/Event-Master/initializers"
 	"github.com/cotopia-org/Event-Master/models"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func EventsCreate(c *gin.Context) {
 	// get data off req body
-	var body struct {
-		Title string
-		Body string
+	var event models.Event
+	if err := c.ShouldBindJSON(&event); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	c.Bind(&body)
 
 	// create event
-	event := models.Event{Title: body.Title, Body: body.Body}
-	
-	result := initializers.DB.Create(&event)
-	if result.Error != nil {
-		c.Status(400)
+	if err := initializers.DB.Create(&event).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	// return it
-	c.JSON(201, gin.H{
-		"event": event,
-	})
+	c.JSON(http.StatusCreated, event)
 }
 
 func EventsIndex(c *gin.Context) {
@@ -59,27 +57,31 @@ func EventsUpdate(c *gin.Context) {
 	// get the id off url
 	id := c.Param("id")
 
-	// get the data off req body
-	var body struct {
-		Title string
-		Body string
-	}
-	c.Bind(&body)
-
 	// find the event we're updating
 	var event models.Event
-	initializers.DB.First(&event, id)
+
+	if err := initializers.DB.First(&event, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Event not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	// get the data off req body
+	if err := c.ShouldBindJSON(&event); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	// update it
-	initializers.DB.Model(&event).Updates(models.Event{
-		Title: body.Title,
-		Body: body.Body,
-	})
-
+	if err := initializers.DB.Save(&event).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	// respond with it
-	c.JSON(201, gin.H{
-		"event": event,
-	})
+	c.JSON(http.StatusOK, event)
 }
 
 func EventsDelete(c *gin.Context) {
