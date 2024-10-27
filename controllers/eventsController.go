@@ -30,7 +30,7 @@ func EventsCreate(c *gin.Context) {
 func EventsIndex(c *gin.Context) {
 	// get the events
 	var events []models.Event
-	initializers.DB.Find(&events)
+	initializers.DB.Preload("Owner").Find(&events)
 
 	// respond with it
 	c.JSON(200, gin.H{
@@ -45,7 +45,7 @@ func EventsShow(c *gin.Context) {
 
 	// get the events
 	var event models.Event
-	initializers.DB.First(&event, id)
+	initializers.DB.Preload("Owner").First(&event, id)
 
 	// respond with it
 	c.JSON(200, gin.H{
