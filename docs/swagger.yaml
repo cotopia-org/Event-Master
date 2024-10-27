@@ -1,0 +1,23 @@
+basePath: /
+host: localhost:3000
+info:
+  contact:
+    email: ali.kharrati@gmail.com
+    name: Ali Kharrati
+  description: It allows users to send various types of events which are stored, processed,
+    and used to generate reports.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: EVENTMASTER API
+  version: "0.1"
+paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    description: JWT Bearer
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"

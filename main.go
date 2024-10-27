@@ -5,11 +5,34 @@ import (
 
 	"github.com/cotopia-org/Event-Master/auth"
 	"github.com/cotopia-org/Event-Master/controllers"
+	docs "github.com/cotopia-org/Event-Master/docs"
 	"github.com/cotopia-org/Event-Master/initializers"
 	"github.com/cotopia-org/Event-Master/middlewares"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
+
+//	@title			EVENTMASTER API
+//	@version		0.1
+//	@description	It allows users to send various types of events which are stored, processed, and used to generate reports.
+
+//	@contact.name	Ali Kharrati
+//	@contact.email	ali.kharrati@gmail.com
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+//	@host		localhost:3000
+//	@BasePath	/
+
+//	@securityDefinitions.basic	BasicAuth
+
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Authorization
+//	@description				JWT Bearer
 
 func init() {
 	initializers.LoadEnvVariables()
@@ -18,6 +41,7 @@ func init() {
 
 func main() {
 	r := gin.Default()
+	docs.SwaggerInfo.BasePath = "/"
 
 	// CORS middleware configuration
 	r.Use(cors.New(cors.Config{
@@ -62,5 +86,6 @@ func main() {
 		protected.GET("/dashboard", auth.ProtectedRoute)
 	}
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Run() // listen and serve on 0.0.0.0:PORT
 }
