@@ -11,7 +11,37 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: EVENTMASTER API
   version: "0.1"
-paths: {}
+paths:
+  /logic/intersect:
+    post:
+      consumes:
+      - application/json
+      description: returns the intersection of many line segments
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: ""
+      summary: calculates intersection
+      tags:
+      - logic
+  /logic/union:
+    post:
+      consumes:
+      - application/json
+      description: returns the union of many line segments
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: ""
+      summary: calculates union
+      tags:
+      - logic
 securityDefinitions:
   ApiKeyAuth:
     description: JWT Bearer

@@ -60,7 +60,6 @@ func UnionSegments(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 201 {} []LineSegment
-// @Router /logic/complement/:minBound/:maxBound" [post]
 func ComplementSegments(c *gin.Context) {
 	var segments []logic.LineSegment
 	minBoundFloat := 0.0
