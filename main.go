@@ -69,6 +69,10 @@ func main() {
 	r.PUT("/events/:id", controllers.EventsUpdate)
 	r.DELETE("/events/:id", controllers.EventsDelete)
 
+	r.POST("/logic/intersect", controllers.IntersectSegments)
+	r.POST("/logic/union", controllers.UnionSegments)
+	r.POST("/logic/complement/:minBound/:maxBound", controllers.ComplementSegments)
+
 	// Route with timeout handling
 	r.GET("/timeout", middlewares.TimeoutHandler(5*time.Second, middlewares.LongRunningOperation))
 
