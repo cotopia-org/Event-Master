@@ -8,6 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @BasePath /
+
+// IntersectSegments godoc
+// @Summary calculates intersection
+// @Schemes list of LineSegments that represents a segment in 1D space with two endpoints (Start, End float64)
+// @Description returns the intersection of many line segments
+// @Tags logic
+// @Accept json
+// @Produce json
+// @Success 201 {} []LineSegment
+// @Router /logic/intersect [post]
 func IntersectSegments(c *gin.Context) {
 	var segments []logic.LineSegment
 	if err := c.ShouldBindJSON(&segments); err != nil {
@@ -18,6 +29,17 @@ func IntersectSegments(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
+// @BasePath /
+
+// UnionSegments godoc
+// @Summary calculates union
+// @Schemes list of LineSegments that represents a segment in 1D space with two endpoints (Start, End float64)
+// @Description returns the union of many line segments
+// @Tags logic
+// @Accept json
+// @Produce json
+// @Success 201 {} []LineSegment
+// @Router /logic/union [post]
 func UnionSegments(c *gin.Context) {
 	var segments []logic.LineSegment
 	if err := c.ShouldBindJSON(&segments); err != nil {
@@ -28,6 +50,17 @@ func UnionSegments(c *gin.Context) {
 	c.JSON(http.StatusCreated, result)
 }
 
+// @BasePath /
+
+// ComplementSegments godoc
+// @Summary calculates complement
+// @Schemes list of LineSegments that represents a segment in 1D space with two endpoints (Start, End float64)
+// @Description returns the complement of many line segments
+// @Tags logic
+// @Accept json
+// @Produce json
+// @Success 201 {} []LineSegment
+// @Router /logic/complement/:minBound/:maxBound" [post]
 func ComplementSegments(c *gin.Context) {
 	var segments []logic.LineSegment
 	minBoundFloat := 0.0
